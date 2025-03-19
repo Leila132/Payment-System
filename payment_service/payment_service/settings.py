@@ -138,3 +138,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+#For API
+SANDBOX_URL = 'https://business.processinprocess.com'
+
+#For connecting auth
+AUTH_API_URL = "http://127.0.0.1:8000/api/verify-token/"

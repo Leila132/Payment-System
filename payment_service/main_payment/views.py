@@ -1,69 +1,35 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from rest_framework.request import Request
 from rest_framework.response import Response
 import requests
 from django.http import HttpResponseRedirect, HttpResponse
 import requests
 import json
-from rest_framework.permissions import IsAuthenticated
-
-URL = 'https://app-demo.payadmit.com/api/v1/payments'
+from .services import get_user_from_token, create_payment
+from .serializers import PaymentSerializer
+from rest_framework import status
 
 class createPaymentAPI(APIView):
-    permission_classes = [IsAuthenticated]
     def post(self, request: Request) -> Response:
-        MERCHANT_PRIVATE_KEY = 'f2a1e7531f66eec765a8'
-        SANDBOX_URL = 'https://business.processinprocess.com'
+        payment_data = request.data.copy()
+        user = get_user_from_token(payment_data.get("token"))
+        if not user:
+            return Response({"error": "Пользователь не найден"}, status=status.HTTP_401_UNAUTHORIZED)
 
-        payload = {
-            "product": "Your Product",
-            "amount": 100000,
-            "currency": "NGN",
-            "orderNumber": "your order number",
-            "extraReturnParam": "your order id or other info",
-            "customer": {
-                "email": "yourmail@gmail.com"
-        }
-    }
+        serializer = PaymentSerializer(data=payment_data)
+        if not serializer.is_valid():
+            return Response({
+                "error": "Неверные данные",
+                "details": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer %s' % (MERCHANT_PRIVATE_KEY)
-        }
-
-        resp = requests.post('%s/api/v1/payments' % (SANDBOX_URL), json=payload, headers=headers)
-
-        if resp.status_code == 200:
-            resp_payload = json.loads(resp.text)
-            print(resp_payload)
-            return HttpResponseRedirect(resp_payload['processingUrl'])
-        else:
-            print(resp.text)
-            return HttpResponse('<html><body><span>Something gone wrong: %s</span></body></html>' % (resp.status_code))
+        payment = serializer.save() 
+        return Response({
+            "message": "Платеж успешно создан",
+            "payment_id": payment.id,
+            "product": payment.product,
+            "amount": payment.amount,
+            "currency": payment.currency
+        }, status=status.HTTP_201_CREATED)
         
-    def get(self, request: Request) -> Response:
-        SANDBOX_URL = 'https://business.processinprocess.com'
-        MERCHANT_PRIVATE_KEY = 'f2a1e7531f66eec765a8'
-        params = {
-            'dateFrom': '2023-01-01',
-            'dateTo': '2025-12-31',
-            'page': 1,
-            'perPage': 20
-        }
-
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer %s' % (MERCHANT_PRIVATE_KEY)
-        }
-
-        resp = requests.get('%s/api/v1/payments' % (SANDBOX_URL), params=params, headers=headers)
-
-        if resp.status_code == 200:
-            payments_list = json.loads(resp.text)
-            print(json.dumps(payments_list))
-            return HttpResponse(json.dumps(payments_list), content_type='application/json')
-        else:
-            return HttpResponse('<html><body><span>Something gone wrong: %s</span></body></html>' % (resp.status_code))
