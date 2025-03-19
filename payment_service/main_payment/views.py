@@ -25,11 +25,6 @@ class createPaymentAPI(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         payment = serializer.save() 
-        return Response({
-            "message": "Платеж успешно создан",
-            "payment_id": payment.id,
-            "product": payment.product,
-            "amount": payment.amount,
-            "currency": payment.currency
-        }, status=status.HTTP_201_CREATED)
+        response = create_payment(payment_data, user)
+        return Response(response, status=status.HTTP_201_CREATED)
         
