@@ -48,11 +48,11 @@ class VerifyTokenAPI(APIView):
         try:
             token = Token.objects.get(key=token_key)
             user = token.user
-            
             return Response({
                 "user_id": user.id,
                 "username": user.username,
-                "valid": True
+                "valid": True,
+                "user_token_api": user.profile.token_api
             })
         except Token.DoesNotExist:
             return Response({"valid": False}, status=404)
