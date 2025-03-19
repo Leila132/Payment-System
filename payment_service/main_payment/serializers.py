@@ -12,6 +12,7 @@ class PaymentSerializer(serializers.ModelSerializer):
         for field in required_fields:
             if field not in data:
                 raise serializers.ValidationError({field: "Это поле обязательно."})
+        return data
 
     def validate_amount(self, value):
         """
