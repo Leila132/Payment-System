@@ -5,6 +5,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from .serializers import RegisterSerializer, UserSerializer
+from .models import UserProfile
+from rest_framework.authtoken.models import Token
 
 class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
@@ -36,3 +38,21 @@ class LoginAPIView(APIView):
                 'user': UserSerializer(user).data
             })
         return Response({'error': 'Неверные учетные данные'}, status=status.HTTP_401_UNAUTHORIZED)
+    
+class VerifyTokenAPI(APIView):
+    def post(self, request):
+        token_key = request.data.get('token')
+        if not token_key:
+            return Response({"error": "Token not provided"}, status=400)
+        
+        try:
+            token = Token.objects.get(key=token_key)
+            user = token.user
+            
+            return Response({
+                "user_id": user.id,
+                "username": user.username,
+                "valid": True
+            })
+        except Token.DoesNotExist:
+            return Response({"valid": False}, status=404)
