@@ -18,6 +18,7 @@ class PaymentService:
         # Отправляем запрос во внешний API
         MERCHANT_PRIVATE_KEY = config["API_TOKEN"]
         SANDBOX_URL = config["SANDBOX_URL"]
+        URL = config["PAYMENTS_URL"]
 
         payload = {
             "product": payment_data["product"],
@@ -38,7 +39,7 @@ class PaymentService:
         }
 
         resp = requests.post(
-            f"{SANDBOX_URL}/api/v1/payments", json=payload, headers=headers
+            f"{SANDBOX_URL}{URL}", json=payload, headers=headers
         )
 
         if resp.status_code == 200:
@@ -57,8 +58,9 @@ class PaymentService:
         ):
             return {"error": "Invalid date format"}
 
-        MERCHANT_PRIVATE_KEY = user["user_token_api"]
+        MERCHANT_PRIVATE_KEY = config["API_TOKEN"]
         SANDBOX_URL = config["SANDBOX_URL"]
+        URL = config["PAYMENTS_URL"]
 
         params = {
             "dateFrom": payment_data["date_start"],
@@ -73,7 +75,55 @@ class PaymentService:
         }
 
         resp = requests.get(
-            f"{SANDBOX_URL}/api/v1/payments", params=params, headers=headers
+            f"{SANDBOX_URL}{URL}", params=params, headers=headers
+        )
+
+        if resp.status_code == 200:
+            return json.loads(resp.text)
+        else:
+            return {"error": f"API error: {resp.status_code}", "details": resp.text}
+        
+    @staticmethod
+    def confirm_payment(payment_data, user):
+        MERCHANT_PRIVATE_KEY = config["API_TOKEN"]
+        SANDBOX_URL = config["SANDBOX_URL"]
+        URL = config["CONFIRM_URL"]
+
+        params = {
+            "token": payment_data["token"],
+        }
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {MERCHANT_PRIVATE_KEY}",
+        }
+
+        resp = requests.get(
+            f"{SANDBOX_URL}{URL}", params=params, headers=headers
+        )
+
+        if resp.status_code == 200:
+            return json.loads(resp.text)
+        else:
+            return {"error": f"API error: {resp.status_code}", "details": resp.text}
+    
+    @staticmethod
+    def decline_payment(payment_data, user):
+        MERCHANT_PRIVATE_KEY = config["API_TOKEN"]
+        SANDBOX_URL = config["SANDBOX_URL"]
+        URL = config["DECLINE_URL"]
+
+        params = {
+            "token": payment_data["token"],
+        }
+
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {MERCHANT_PRIVATE_KEY}",
+        }
+
+        resp = requests.get(
+            f"{SANDBOX_URL}{URL}", params=params, headers=headers
         )
 
         if resp.status_code == 200:
