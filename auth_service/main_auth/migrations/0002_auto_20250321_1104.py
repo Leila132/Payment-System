@@ -4,26 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main_auth', '0001_initial'),
+        ("main_auth", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='userprofile',
-            name='token_api',
+            model_name="userprofile",
+            name="token_api",
         ),
         migrations.AddField(
-            model_name='userprofile',
-            name='country',
-            field=models.CharField(default='NG', max_length=2),
+            model_name="userprofile",
+            name="country",
+            field=models.CharField(default="NG", max_length=2),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='userprofile',
-            name='phone',
-            field=models.CharField(default='12345678', max_length=11),
+            model_name="userprofile",
+            name="phone",
+            field=models.CharField(default="12345678", max_length=11),
             preserve_default=False,
         ),
     ]

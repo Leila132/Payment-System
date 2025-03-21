@@ -1,14 +1,15 @@
 from rest_framework import serializers
 from .models import Payment
 
+
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
-        fields = ['product', 'amount', 'currency']
+        fields = ["product", "amount", "currency"]
 
     def validate(self, data):
         # Проверка наличия всех обязательных полей
-        required_fields = ['product', 'amount', 'currency']
+        required_fields = ["product", "amount", "currency"]
         for field in required_fields:
             if field not in data:
                 raise serializers.ValidationError({field: "Это поле обязательно."})
@@ -26,7 +27,9 @@ class PaymentSerializer(serializers.ModelSerializer):
         """
         Проверка, что валюта допустима.
         """
-        allowed_currencies = ['NGN', 'GHS']
+        allowed_currencies = ["NGN", "GHS"]
         if value not in allowed_currencies:
-            raise serializers.ValidationError(f"Валюта должна быть одной из: {', '.join(allowed_currencies)}")
+            raise serializers.ValidationError(
+                f"Валюта должна быть одной из: {', '.join(allowed_currencies)}"
+            )
         return value
