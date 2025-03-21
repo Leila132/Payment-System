@@ -52,7 +52,11 @@ class VerifyTokenAPI(APIView):
                 "user_id": user.id,
                 "username": user.username,
                 "valid": True,
-                "user_token_api": user.profile.token_api
+                "email": user.email,
+                "phone": user.profile.phone,
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "country": user.profile.country
             })
         except Token.DoesNotExist:
             return Response({"valid": False}, status=404)

@@ -3,13 +3,14 @@ import json
 
 login_url = 'http://127.0.0.1:8000/api/login/'
 login_data = {
-    'username': 'testuser4',
-    'password': 'testpassword123'
+    'username': 'test_user3',
+    'password': 'test_pass123',
 }
 login_response = requests.post(login_url, json=login_data)
 token = login_response.json().get('token') 
 print(token)
 print(login_response.json())
+
 payment_url = 'http://127.0.0.1:8001/api/create_payment/'
 data = {
   "token": token,
@@ -23,7 +24,7 @@ a = json.loads(response.text)
 print(response.status_code)  
 print(a)
 
-
+"""
 payment_url = 'http://127.0.0.1:8001/api/payments/'
 data = {
   "token": token,
@@ -35,3 +36,4 @@ response = requests.get(payment_url, json=data)
 a = json.loads(response.text)
 print(response.status_code)  
 print(a)
+"""

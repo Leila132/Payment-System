@@ -3,3 +3,4 @@
 *.db
 __pycache__/
 /new_env/
+.env

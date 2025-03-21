@@ -3,4 +3,5 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    token_api = models.CharField(max_length=255)
+    phone =  models.CharField(max_length=11)
+    country =  models.CharField(max_length=2)

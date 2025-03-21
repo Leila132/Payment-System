@@ -12,8 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import dotenv_values
 
-pg_password = os.environ.get("pg_password")
+config = dotenv_values()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-yg9d+i=f+oa@0-@kt2j%@$o5oc&hvbn+9gm#(7gr!+rui)j5g1'
+SECRET_KEY = config['AUTH_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,11 +91,11 @@ WSGI_APPLICATION = 'auth_service.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_for_test',
-        'USER': 'postgres',
-        'PASSWORD': pg_password,
+        'NAME': config['PG_DB_NAME'],
+        'USER': config['PG_USER'],
+        'PASSWORD': config['PG_PASSWORD'],
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': config['PG_PORT'],
     }
 }
 
