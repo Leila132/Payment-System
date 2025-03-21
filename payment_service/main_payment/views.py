@@ -44,3 +44,20 @@ class PaymentsAPI(APIView):
             return Response(result, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(result)
+    
+class ConfirmPaymentAPI(APIView):
+    def post(self, request: Request) -> Response:
+        payment_data = request.data.copy()
+        user = UserService.get_user_from_token(payment_data.get("user_token"))
+
+        if not user:
+            return Response(
+                {"error": "Пользователь не найден"}, status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        result = PaymentService.confirm_payment(payment_data, user)
+
+        if "error" in result:
+            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(result)
