@@ -4,15 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main_payment', '0002_payment_token'),
+        ("main_payment", "0002_payment_token"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='payment',
-            name='status',
-            field=models.CharField(choices=[('Создан', 'Создан'), ('Подтвержден', 'Подтвержден'), ('Отклонен', 'Отклонен'), ('Завершен', 'Завершен')], default='Создан', max_length=100, verbose_name='Статус'),
+            model_name="payment",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("Создан", "Создан"),
+                    ("Подтвержден", "Подтвержден"),
+                    ("Отклонен", "Отклонен"),
+                    ("Завершен", "Завершен"),
+                ],
+                default="Создан",
+                max_length=100,
+                verbose_name="Статус",
+            ),
         ),
     ]

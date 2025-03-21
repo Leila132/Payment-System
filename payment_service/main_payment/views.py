@@ -44,7 +44,8 @@ class PaymentsAPI(APIView):
             return Response(result, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(result)
-    
+
+
 class ConfirmPaymentAPI(APIView):
     def get(self, request: Request) -> Response:
         payment_data = request.data.copy()
@@ -61,7 +62,8 @@ class ConfirmPaymentAPI(APIView):
             return Response(result, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(result)
-    
+
+
 class DeclinePaymentAPI(APIView):
     def get(self, request: Request) -> Response:
         payment_data = request.data.copy()

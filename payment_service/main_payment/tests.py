@@ -25,14 +25,10 @@ print(response.status_code)
 print(a)
 
 
-payment_url = 'http://127.0.0.1:8001/api/confirm_payment/'
-data = {
-  "user_token": token,
-  "token": response.json().get("token")
-}
+payment_url = "http://127.0.0.1:8001/api/confirm_payment/"
+data = {"user_token": token, "token": response.json().get("token")}
 
 response = requests.get(payment_url, json=data)
 a = json.loads(response.text)
-print(response.status_code)  
+print(response.status_code)
 print(a)
-

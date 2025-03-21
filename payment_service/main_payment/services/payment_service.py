@@ -38,9 +38,7 @@ class PaymentService:
             "Authorization": f"Bearer {MERCHANT_PRIVATE_KEY}",
         }
 
-        resp = requests.post(
-            f"{SANDBOX_URL}{URL}", json=payload, headers=headers
-        )
+        resp = requests.post(f"{SANDBOX_URL}{URL}", json=payload, headers=headers)
 
         if resp.status_code == 200:
             response_data = json.loads(resp.text)
@@ -74,15 +72,13 @@ class PaymentService:
             "Authorization": f"Bearer {MERCHANT_PRIVATE_KEY}",
         }
 
-        resp = requests.get(
-            f"{SANDBOX_URL}{URL}", params=params, headers=headers
-        )
+        resp = requests.get(f"{SANDBOX_URL}{URL}", params=params, headers=headers)
 
         if resp.status_code == 200:
             return json.loads(resp.text)
         else:
             return {"error": f"API error: {resp.status_code}", "details": resp.text}
-        
+
     @staticmethod
     def confirm_payment(payment_data, user):
         MERCHANT_PRIVATE_KEY = config["API_TOKEN"]
@@ -98,15 +94,13 @@ class PaymentService:
             "Authorization": f"Bearer {MERCHANT_PRIVATE_KEY}",
         }
 
-        resp = requests.get(
-            f"{SANDBOX_URL}{URL}", params=params, headers=headers
-        )
+        resp = requests.get(f"{SANDBOX_URL}{URL}", params=params, headers=headers)
 
         if resp.status_code == 200:
             return json.loads(resp.text)
         else:
             return {"error": f"API error: {resp.status_code}", "details": resp.text}
-    
+
     @staticmethod
     def decline_payment(payment_data, user):
         MERCHANT_PRIVATE_KEY = config["API_TOKEN"]
@@ -122,9 +116,7 @@ class PaymentService:
             "Authorization": f"Bearer {MERCHANT_PRIVATE_KEY}",
         }
 
-        resp = requests.get(
-            f"{SANDBOX_URL}{URL}", params=params, headers=headers
-        )
+        resp = requests.get(f"{SANDBOX_URL}{URL}", params=params, headers=headers)
 
         if resp.status_code == 200:
             return json.loads(resp.text)

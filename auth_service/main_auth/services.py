@@ -14,7 +14,7 @@ class AuthService:
             return {
                 "success": True,
                 "token": token.key,
-                "user": UserSerializer(user).data
+                "user": UserSerializer(user).data,
             }, None
         return None, serializer.errors
 
@@ -26,7 +26,7 @@ class AuthService:
             return {
                 "success": True,
                 "token": token.key,
-                "user": UserSerializer(user).data
+                "user": UserSerializer(user).data,
             }, None
         return None, {"error": "Неверные учетные данные"}
 
@@ -34,7 +34,7 @@ class AuthService:
     def verify_token(token_key):
         if not token_key:
             return None, {"error": "Token not provided"}
-        
+
         try:
             token = Token.objects.get(key=token_key)
             user = token.user

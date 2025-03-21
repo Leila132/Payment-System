@@ -21,7 +21,7 @@ class LoginAPIView(APIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-        
+
         result, error = AuthService.login_user(username, password)
         if result:
             return Response(result)
@@ -32,7 +32,7 @@ class VerifyTokenAPI(APIView):
     def post(self, request):
         token_key = request.data.get("token")
         result, error = AuthService.verify_token(token_key)
-        
+
         if result:
             return Response(result)
         if "valid" in error:

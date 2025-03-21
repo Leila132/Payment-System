@@ -4,16 +4,17 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('main_payment', '0001_initial'),
+        ("main_payment", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='payment',
-            name='token',
-            field=models.CharField(default='null', max_length=100, verbose_name='Токен платежа'),
+            model_name="payment",
+            name="token",
+            field=models.CharField(
+                default="null", max_length=100, verbose_name="Токен платежа"
+            ),
             preserve_default=False,
         ),
     ]
