@@ -7,6 +7,7 @@ class Payment(models.Model):
     currency = models.CharField(
         "Валюта", max_length=3, choices=[("NGN", "NGN"), ("GHS", "GHS")], default="NGN"
     )
+    token = models.CharField("Токен платежа", max_length=100)
 
     def __str__(self):
         return self.name

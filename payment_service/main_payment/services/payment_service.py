@@ -42,7 +42,11 @@ class PaymentService:
         )
 
         if resp.status_code == 200:
-            return json.loads(resp.text)
+            response_data = json.loads(resp.text)
+            return {
+                "token": response_data.get("token"),
+                "processingUrl": response_data.get("processingUrl"),
+            }
         else:
             return {"error": f"API error: {resp.status_code}", "details": resp.text}
 
