@@ -19,18 +19,18 @@ API для взаимодействия с платежной системой h
 4. Создайте файл с переменными окружения:
 
 .env
-`PG_PASSWORD = ""`
-`PG_USER = ""`
-`PG_DB_NAME = ""`
-`PG_PORT = ""`
-`AUTH_SECRET_KEY = ""`
-`PAYMENT_SECRET_KEY = ""`
-`SANDBOX_URL = ''`
-`API_TOKEN = ""`
-`PAYMENTS_URL = ""`
-`CONFIRM_URL = ""`
-`DECLINE_URL = ""`
-`AUTH_API_URL = "http://***/api/verify-token/"`
+-`PG_PASSWORD = ""`
+-`PG_USER = ""`
+-`PG_DB_NAME = ""`
+-`PG_PORT = ""`
+-`AUTH_SECRET_KEY = ""`
+-`PAYMENT_SECRET_KEY = ""`
+-`SANDBOX_URL = ''`
+-`API_TOKEN = ""`
+-`PAYMENTS_URL = ""`
+-`CONFIRM_URL = ""`
+-`DECLINE_URL = ""`
+-`AUTH_API_URL = "http://***/api/verify-token/"`
 
 5. Проведите миграции:
 
@@ -47,13 +47,13 @@ data = {
     "phone": "1232456",
     "first_name": "test",
     "last_name": "test",
-    "country": "NG",
+    "country": "NG"
 }
 
 2. POST /api/login/
 data = {
     "username": "test_user",
-    "password": "test_pass123",
+    "password": "test_pass123"
 }
 
 3. POST /api/verify-token/
@@ -65,7 +65,7 @@ data = {
 data = {
     "user_token": "user_token", 
     "code": "USD", 
-    "name": "Доллар США",
+    "name": "Доллар США"
 }
 
 5. POST /api/create_payment/
@@ -73,7 +73,7 @@ data = {
     "token": "token",
     "product": "Premium Subscription",
     "amount": 50000,
-    "currency": 1,
+    "currency": 1
 }
 
 6. GET /api/confirm_payment/
