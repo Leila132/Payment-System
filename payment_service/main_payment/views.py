@@ -80,3 +80,17 @@ class DeclinePaymentAPI(APIView):
             return Response(result, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(result)
+
+
+class CreateCurrencyAPI(APIView):
+    def post(self, request: Request) -> Response:
+        cur_data = request.data.copy()
+        user = UserService.get_user_from_token(cur_data.get("user_token"))
+        print(cur_data)
+        if not user:
+            return Response(
+                {"error": "Пользователь не найден"}, status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        response = PaymentService.create_currency(cur_data)
+        return Response(response, status=status.HTTP_201_CREATED)

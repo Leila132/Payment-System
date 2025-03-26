@@ -5,6 +5,7 @@ from django.conf import settings
 from dotenv import dotenv_values
 from ..repositories.payment_repository import PaymentRepository
 from ..utils.validators import check_date
+from ..repositories.currency_repository import CurrencyRepository
 
 config = dotenv_values()
 
@@ -13,17 +14,17 @@ class PaymentService:
     @staticmethod
     def create_payment(payment_data, user):
         # Сохраняем в БД
-        payment = PaymentRepository.create(payment_data)
+        currency = CurrencyRepository.get_by_id(payment_data["currency"])
+        payment = PaymentRepository.create(payment_data, user, currency)
 
         # Отправляем запрос во внешний API
         MERCHANT_PRIVATE_KEY = config["API_TOKEN"]
         SANDBOX_URL = config["SANDBOX_URL"]
         URL = config["PAYMENTS_URL"]
-
         payload = {
             "product": payment_data["product"],
             "amount": payment_data["amount"],
-            "currency": payment_data["currency"],
+            "currency": currency.code,
             "customer": {
                 "email": user["email"],
                 "phone": user["phone"],
@@ -97,6 +98,9 @@ class PaymentService:
         resp = requests.get(f"{SANDBOX_URL}{URL}", params=params, headers=headers)
 
         if resp.status_code == 200:
+            update_payment = PaymentRepository.change_status(
+                payment_data["id"], "Подтвержден"
+            )
             return json.loads(resp.text)
         else:
             return {"error": f"API error: {resp.status_code}", "details": resp.text}
@@ -119,6 +123,15 @@ class PaymentService:
         resp = requests.get(f"{SANDBOX_URL}{URL}", params=params, headers=headers)
 
         if resp.status_code == 200:
+            update_payment = PaymentRepository.change_status(
+                payment_data["id"], "Отклонен"
+            )
             return json.loads(resp.text)
         else:
             return {"error": f"API error: {resp.status_code}", "details": resp.text}
+
+    @staticmethod
+    def create_currency(cur_data):
+        # Сохраняем в БД
+        currency = CurrencyRepository.create(cur_data)
+        return currency

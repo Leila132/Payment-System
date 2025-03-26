@@ -22,14 +22,3 @@ class PaymentSerializer(serializers.ModelSerializer):
         if value <= 0:
             raise serializers.ValidationError("Сумма должна быть больше нуля.")
         return value
-
-    def validate_currency(self, value):
-        """
-        Проверка, что валюта допустима.
-        """
-        allowed_currencies = ["NGN", "GHS"]
-        if value not in allowed_currencies:
-            raise serializers.ValidationError(
-                f"Валюта должна быть одной из: {', '.join(allowed_currencies)}"
-            )
-        return value
