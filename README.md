@@ -40,7 +40,7 @@ API для взаимодействия с платежной системой h
 
 1. POST /api/register/
 ```JSON
-data = {
+{
     "username": "test_user",
     "password": "test_pass123",
     "password2": "test_pass123",
