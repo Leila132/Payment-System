@@ -18,6 +18,7 @@ API для взаимодействия с платежной системой h
 
 4. Создайте файл с переменными окружения:
 
+```
 .env
 `PG_PASSWORD = ""`
 `PG_USER = ""`
@@ -31,6 +32,7 @@ API для взаимодействия с платежной системой h
 `CONFIRM_URL = ""`
 `DECLINE_URL = ""`
 `AUTH_API_URL = "http://***/api/verify-token/"`
+```
 
 5. Проведите миграции:
 
@@ -54,7 +56,7 @@ API для взаимодействия с платежной системой h
 
 2. POST /api/login/
 ```JSON
-data = {
+{
     "username": "test_user",
     "password": "test_pass123"
 }
@@ -62,14 +64,14 @@ data = {
 
 3. POST /api/verify-token/
 ```JSON
-data = {
+{
     "token": "token_key"
 }
 ```
 
 4. POST /api/create_currency/
 ```JSON
-data = {
+{
     "user_token": "user_token", 
     "code": "USD", 
     "name": "Доллар США"
@@ -78,7 +80,7 @@ data = {
 
 5. POST /api/create_payment/
 ```JSON
-data = {
+{
     "token": "token",
     "product": "Premium Subscription",
     "amount": 50000,
@@ -88,7 +90,7 @@ data = {
 
 6. GET /api/confirm_payment/
 ```JSON
-data = {
+{
     "user_token": "token", 
     "token": "payment_token"
 }
@@ -96,7 +98,7 @@ data = {
 
 7. GET /api/decline_payment/
 ```JSON
-data = {
+{
     "user_token": "token", 
     "token": "payment_token"
 }
